@@ -18,7 +18,7 @@ const ACCESS_TOKEN = process.env.SHOPIFY_TOKEN;
 
 app.post("/create-draft-order", async (req, res) => {
   try {
-    const { box, items, card, message, total } = req.body;
+    const { box, items, card, message, total, image } = req.body;
 
     const draftOrder = {
       draft_order: {
@@ -33,7 +33,10 @@ app.post("/create-draft-order", async (req, res) => {
               { name: "💌 Card", value: card || "None" },
               { name: "✍️ Message", value: message || "" },
               { name: "💲 Total Price", value: "₹" + total.toFixed(2) }
-            ]
+            ],
+            custom: true,
+            requires_shipping: true,
+            image_url: image || "https://cdn.shopify.com/s/files/1/0722/5887/9651/files/9.jpg?v=1758791209"
           }
         ]
       }
@@ -52,7 +55,6 @@ app.post("/create-draft-order", async (req, res) => {
     );
 
     const data = await response.json();
-
     if (data.errors || !data.draft_order) {
       console.error("Shopify API error:", data);
       return res.status(400).json({ error: "Shopify API error", details: data });
@@ -65,6 +67,7 @@ app.post("/create-draft-order", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 // 🧪 Test route (optional)
 app.get("/", (req, res) => res.send("GiftBox Builder API is running ✅"));
