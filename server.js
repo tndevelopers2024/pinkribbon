@@ -32,7 +32,7 @@ app.post("/create-draft-order", async (req, res) => {
               { name: "🧴 Items", value: items.join(", ") },
               { name: "💌 Card", value: card || "None" },
               { name: "✍️ Message", value: message || "" },
-              { name: "💲 Total Price", value: "₹" + total.toFixed(2) }
+              { name: "₹ Total Price", value: "₹" + total.toFixed(2) }
             ]
           }
         ]
