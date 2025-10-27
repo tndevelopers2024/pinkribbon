@@ -1,10 +1,18 @@
 import express from "express";
 import fetch from "node-fetch";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
 
-// 🏪 Replace these with your store credentials
+// ✅ Enable CORS for your Shopify store domain
+app.use(cors({
+  origin: ["https://20pcrm-5c.myshopify.com"], // your Shopify store domain
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "x-api-key"]
+}));
+
+// 🏪 Environment variables (from Vercel)
 const SHOPIFY_STORE = process.env.SHOPIFY_STORE;
 const ACCESS_TOKEN = process.env.SHOPIFY_TOKEN;
 
@@ -50,7 +58,7 @@ app.post("/create-draft-order", async (req, res) => {
       return res.status(400).json({ error: "Shopify API error", details: data });
     }
 
-    // ✅ Send checkout link to frontend
+    res.setHeader("Access-Control-Allow-Origin", "https://20pcrm-5c.myshopify.com");
     res.json({ checkoutUrl: data.draft_order.invoice_url });
   } catch (err) {
     console.error("Server error:", err);
@@ -58,5 +66,8 @@ app.post("/create-draft-order", async (req, res) => {
   }
 });
 
+// 🧪 Test route (optional)
+app.get("/", (req, res) => res.send("GiftBox Builder API is running ✅"));
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🎁 GiftBox App running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🎁 Server running on port ${PORT}`));
