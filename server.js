@@ -50,16 +50,19 @@ app.post("/create-draft-order", async (req, res) => {
     });
 
     // ✅ Card
-    if (card) {
-      line_items.push({
-        variant_id: Number(card.variantId),
-        quantity: 1,
-        properties: [
-          { name: "Type", value: "Gift Card" },
-          { name: "Image", value: card.image }
-        ]
-      });
-    }
+   // ✅ Card + Message
+if (card) {
+  line_items.push({
+    variant_id: Number(card.variantId),
+    quantity: 1,
+    properties: [
+      { name: "Type", value: "Gift Card" },
+      { name: "Image", value: card.image },
+      { name: "Custom Message", value: message || "No message" }
+    ]
+  });
+}
+
 
     // ✅ Build draft order payload
     const draftOrder = {
