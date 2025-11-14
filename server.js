@@ -7,7 +7,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["https://20pcrm-5c.myshopify.com"], 
+    origin: ["https://pinkribbonshop.in"], 
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   })
